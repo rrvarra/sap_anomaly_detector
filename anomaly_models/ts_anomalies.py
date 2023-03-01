@@ -2,8 +2,9 @@
 """
 Created on Mon Feb 26 22:01:08 2018
 
-@author: ad_tghosh/ad_sarkardi
+@author: ad_tghosh/ad_sarkardi/rrvarra
 """
+import logging
 from data_service.timeseries import TimeSeries
 import matplotlib.pyplot as plt
 import anomaly_models.smirnov_grubbs_esd as sge
@@ -27,7 +28,8 @@ class AnomalyModel:
     def get_anomalies(self, add_kibana_link=False, **kwargs):
         indx, scores = self._get_anomaly_indices_scores()
         scores = np.round(scores, 2)
-        print(indx, scores)
+        if len(indx):
+            logging.info('Indx %s Scores: %s', indx, scores)
         
         anomaly_df = self.timeseries_slice.subsample(indx)
         anomaly_df = pd.DataFrame(anomaly_df).reset_index()
@@ -75,7 +77,7 @@ class AnomalyModel:
                     if df_tmp[threshold_col_name].sum() < threshold:
                         df = df.drop(df_tmp.index)
             except:
-                print('FAILED anomaly filtering by mincount')
+                logging.error('FAILED anomaly filtering by mincount')
         return df
                 
 class SeasonalEsdEwma(AnomalyModel):    

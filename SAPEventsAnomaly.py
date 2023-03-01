@@ -4,7 +4,7 @@ Created on Thu Mar 15 14:22:15 2018
 
 @author: tghosh
 """
-
+import logging
 from data_service import es_query_engine as qe
 from CONFIG import sap_event_config as sapconf
 import pandas as pd
@@ -14,7 +14,7 @@ from data_service import data_processor as dp
 import logutil
 
 
-log_util.set_logging(r'D:\LOGS\SAP_ANOMALY')
+logutil.set_logging(log_file=r'D:\LOGS\SAP_ANOMALY')
 #import requests
 #from requests.packages.urllib3.exceptions import InsecureRequestWarning
 #requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -37,8 +37,8 @@ event_types_res = qe.es_get_aggregations_data(es_instance=es,
 
 event_types_df = qe.read_aggregated_output(event_types_res, sapconf.SRC_FIELDS)
 #event_types_df = event_types_df.sort_values(['counts'],ascending=False)
-print('EventTypes:', event_types_df.shape)
-print(event_types_df.head(10))
+logging.info('EventTypes: %s', event_types_df.shape)
+logging.info("event_types_df.head: %s", event_types_df.head(10))
 
 
 
@@ -56,8 +56,7 @@ for idx, row in event_types_df.iterrows():
     
     df_tmp = pd.DataFrame(results['group_by_datetime']['buckets'])
     df_tmp['timestamp'] = pd.to_datetime(df_tmp['key_as_string'])
-    df_tmp=df_tmp.drop(['key_as_string','key'], axis =1)
-    print(df_tmp.shape)
+    df_tmp=df_tmp.drop(['key_as_string','key'], axis =1)    
     try:
         description = results['info']['hits'][0]['_source']['Description']
     except:
@@ -123,13 +122,13 @@ if not all_anomalies_df.empty:
     columns = ['timestamp', 'HostInfo.PipeName', 'LogName', 'Source', 'EventID',
                'count', 'score', 'Kibana', 'description']
     all_anomalies_df = all_anomalies_df[columns]
-    print('All Anomalies before filter: ', all_anomalies_df.shape, ' Threshold: ', sapconf.MIN_THRESHOLDS)
+    logging.info('All Anomalies before filter: %s Threshold %s', all_anomalies_df.shape, sapconf.MIN_THRESHOLDS)
     all_anomalies_df=SeasonalEsdEwma._filter_df_by_threshold(all_anomalies_df,
                                                              'count', 
                                                              sapconf.MIN_THRESHOLDS)
-    print('Filtered Anomalies: ', all_anomalies_df.shape)
+    logging.info('Filtered Anomalies: %s', all_anomalies_df.shape)
 
-print("Filtered",all_anomalies_df.shape)
+logging.info("All Filtered: %s", all_anomalies_df.shape)
 total_anomalies = len(all_anomalies_df)
 
 if total_anomalies:
@@ -142,6 +141,6 @@ if total_anomalies:
                                                 anomaly_table=all_anomalies_df.to_html(escape=False,
                                                                                           index=False))
 
-    print("Sending EMAIL:", email_title)
+    logging.info("Sending EMAIL to : %s", email_title)
     em.send_html_email_alert(receiver_list=receivers, sender=sender, 
                              title=email_title, message=email_content)

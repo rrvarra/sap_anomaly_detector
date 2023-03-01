@@ -4,12 +4,14 @@ Created on Wed Feb 21 20:02:56 2018
 
 @author: ad_sarkardi/ad_tghosh
 """
-
+import logging
 from elasticsearch.helpers import scan
 from elasticsearch import Elasticsearch
 import pandas as pd
 from utilities import credentials_manager as cm
 
+logging.getLogger("requests").setLevel(logging.WARNING)
+logging.getLogger("elasticsearch").setLevel(logging.WARNING)
 
 
 MAX_AGG_DEPTH = 5

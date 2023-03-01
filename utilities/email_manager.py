@@ -4,6 +4,7 @@ Created on Mon Mar  5 06:50:42 2018
 
 @author: ad_sarkardi
 """
+import logging
 
 import smtplib
 from email.mime.text import MIMEText
@@ -34,7 +35,6 @@ def send_html_email_alert(receiver_list, sender, title, message):
         smtp_server.quit()
 
     except Exception as ex:
-        print(ex.message)
-        print("EMAIL SENDING FAILED")
+        logging.error('FAILED To send email: %s', str(ex))        
         return "FAILURE"
     return "SUCCESS"
