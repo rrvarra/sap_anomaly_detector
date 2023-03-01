@@ -15,9 +15,8 @@ import logutil
 
 
 logutil.set_logging(log_file=r'D:\LOGS\SAP_ANOMALY')
-#import requests
-#from requests.packages.urllib3.exceptions import InsecureRequestWarning
-#requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+
+logging.info("Start SAP_ANOMALY_DETECTOR")
 
 pd.set_option('display.max_colwidth', -1)
 #pd.options.display.float_format = '{0:.2f}'.format
@@ -123,12 +122,12 @@ if not all_anomalies_df.empty:
                'count', 'score', 'Kibana', 'description']
     all_anomalies_df = all_anomalies_df[columns]
     logging.info('All Anomalies before filter: %s Threshold %s', all_anomalies_df.shape, sapconf.MIN_THRESHOLDS)
-    all_anomalies_df=SeasonalEsdEwma._filter_df_by_threshold(all_anomalies_df,
+    all_anomalies_df = SeasonalEsdEwma._filter_df_by_threshold(all_anomalies_df,
                                                              'count', 
                                                              sapconf.MIN_THRESHOLDS)
-    logging.info('Filtered Anomalies: %s', all_anomalies_df.shape)
+    logging.info('All Anomalies after filter: %s Threshold %s', all_anomalies_df.shape, sapconf.MIN_THRESHOLDS)                                                    
 
-logging.info("All Filtered: %s", all_anomalies_df.shape)
+logging.info('Filtered Anomalies: %s', all_anomalies_df.shape)
 total_anomalies = len(all_anomalies_df)
 
 if total_anomalies:
@@ -144,3 +143,6 @@ if total_anomalies:
     logging.info("Sending EMAIL to : %s", email_title)
     em.send_html_email_alert(receiver_list=receivers, sender=sender, 
                              title=email_title, message=email_content)
+else:    
+    logging.info("No filtered anomalies to process")
+    
