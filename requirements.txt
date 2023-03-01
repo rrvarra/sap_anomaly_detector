@@ -1,0 +1,9 @@
+requests==2.28.1
+elasticsearch<8
+keyring==23.8.2  # needed to prevent pytest Warnings: DeprecationWarning: Properties from keyring.util are no longer ...
+git+https://github.com/frispete/keyrings.cryptfile; sys_platform == 'linux'
+jupyter
+pandas
+openpyxl
+seasonal
+matplotlib
