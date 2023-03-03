@@ -44,14 +44,22 @@ RUN_MODEL_RECENCY_WEEKS = 2
 SRC_FIELDS =  ['Source','LogName','EventID','HostInfo.PipeName']
 OTHER_FIELDS = ['Description']
 
-"""
-EMAIL_TO = ['sap.l3.us@intel.com',
-            'SAPL3IIDC@intel.com', 'ashok.desai@intel.com','ram.r.varra@intel.com','walter.burke@intel.com',
-            'john.r.barbour@intel.com', 'abhishek.shukla@intel.com', 'gowri.shankar.gavara@intel.com', 'karl.e.mailman@intel.com',
-            'gary.gilardi@intel.com','sap.l3.basis@intel.com'
-			,'balamurugan.sivasubramanian@intel.com','vipin.muthukattil@intel.com']
-"""                        
-EMAIL_TO = ['ram.r.varra@intel.com']
+
+EMAIL_TO = [
+        'sap.l3.us@intel.com',
+        'SAPL3IIDC@intel.com', 
+        'ram.r.varra@intel.com',
+        'walter.burke@intel.com',
+        'john.r.barbour@intel.com', 
+        'abhishek.shukla@intel.com', 
+        'gowri.shankar.gavara@intel.com', 
+        'karl.e.mailman@intel.com',
+        'gary.gilardi@intel.com',
+        'sap.l3.basis@intel.com', 
+        'balamurugan.sivasubramanian@intel.com',
+        'vipin.muthukattil@intel.com'
+]
+#EMAIL_TO = ['ram.r.varra@intel.com']
 EMAIL_FROM = 'anomaly_detector@intel.com'
 
 EMAIL_SUBJECT = 'Top {anomaly_count} SAP Event Anomalies for today from %s ' % (platform.node(), )
