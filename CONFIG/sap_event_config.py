@@ -15,10 +15,10 @@ _CA_CERT_FILE = 'CONFIG/IntelSHA256RootCA-Base64.crt'
 ES_CONFIG = {
     'INDEX': 'sap_evtlog-*',
     'DOC_TYPE': 'sap_evtlog',
-    'ca_certs': _CA_CERT_FILE, 
+    'ca_certs': _CA_CERT_FILE,
     'SERVICE_NAME': 'ITI_ANOMALY',
     'USER_NAME': 'SAP_EVT_ANOMALY_AUTH',
-    'HOST' : 'https://elkprdes1.intel.com:3602',
+    'HOST' : 'https://sapps.eck1es.intel.com:9443',
     'timeout': 240
 }
 
@@ -47,15 +47,15 @@ OTHER_FIELDS = ['Description']
 
 EMAIL_TO = [
         'sap.l3.us@intel.com',
-        'SAPL3IIDC@intel.com', 
+        'SAPL3IIDC@intel.com',
         'ram.r.varra@intel.com',
         'walter.burke@intel.com',
-        'john.r.barbour@intel.com', 
-        'abhishek.shukla@intel.com', 
-        'gowri.shankar.gavara@intel.com', 
+        'john.r.barbour@intel.com',
+        'abhishek.shukla@intel.com',
+        'gowri.shankar.gavara@intel.com',
         'karl.e.mailman@intel.com',
         'gary.gilardi@intel.com',
-        'sap.l3.basis@intel.com', 
+        'sap.l3.basis@intel.com',
         'balamurugan.sivasubramanian@intel.com',
         'vipin.muthukattil@intel.com'
 ]
@@ -73,14 +73,14 @@ EMAIL_TEMPLATE = (
 GROUP_LIMIT = 500
 
 EVENT_GROUPS_QUERY = {
-        
+
         "_source" : SRC_FIELDS,
         "size":0,
-        
+
         "query": {
             "bool":{
                     "must": [
-                                { 
+                                {
                                   "range": {
                                         "Ts": {
                                             "gte": START_TS,
@@ -88,22 +88,22 @@ EVENT_GROUPS_QUERY = {
                                         }
                                   }
                                 },
-                                { 
+                                {
                                   "terms": {
-                                          "Level": ["Error"]        
+                                          "Level": ["Error"]
                                   }
                                 },
-                                { 
+                                {
                                   "terms": {
-                                          "HostInfo.Use": ["Prod"]        
+                                          "HostInfo.Use": ["Prod"]
                                   }
                                 }
-              
+
                     ]
-                    
-            } 
+
+            }
         },
-            
+
         "aggs":{
                 "by_Source": {
                         "terms": {
@@ -132,13 +132,13 @@ EVENT_GROUPS_QUERY = {
                         }
                 }
         }
-        
+
 }
 
 
 
 def get_event_counts_query(**kwargs):
-    
+
     return{
           "_source" : OTHER_FIELDS,
           "size" : 1,
@@ -153,10 +153,10 @@ def get_event_counts_query(**kwargs):
                     }
                   },
                   { "match": {
-                         "Level": "Error"        
+                         "Level": "Error"
                      }
                   },
-                  { 
+                  {
                     "match": {
                         "HostInfo.Use": "Prod"
                         }
@@ -166,20 +166,20 @@ def get_event_counts_query(**kwargs):
                      }
                   },
                     { "match": {
-                         "LogName": kwargs["LogName"]     
+                         "LogName": kwargs["LogName"]
                      }
                   },
                     { "match": {
-                         "Source": kwargs["Source"]         
+                         "Source": kwargs["Source"]
                      }
                   },
                     { "match": {
-                         "HostInfo.PipeName": kwargs["HostInfo.PipeName"]         
+                         "HostInfo.PipeName": kwargs["HostInfo.PipeName"]
                      }
                   }
                 ]
 
-              } 
+              }
             },
 
              "aggs":{
@@ -187,8 +187,8 @@ def get_event_counts_query(**kwargs):
                   "date_histogram":{
                                   "min_doc_count" : 0,
                                   "field":TS_FIELD,
-                                  "interval":TS_INTERVAL,
-                                  "extended_bounds" : { 
+                                  "fixed_interval":TS_INTERVAL,
+                                  "extended_bounds" : {
                                         "min" : START_TS,
                                         "max" : END_TS
                                  }
@@ -200,14 +200,14 @@ def get_event_counts_query(**kwargs):
 
 
 MIN_THRESHOLDS = [
-        {"LogName":"APPLICATION", "EventID":"35712","Threshold": float("inf")},                 
-        {"LogName":"APPLICATION", "EventID":"14197","Threshold": float('inf')},                 
+        {"LogName":"APPLICATION", "EventID":"35712","Threshold": float("inf")},
+        {"LogName":"APPLICATION", "EventID":"14197","Threshold": float('inf')},
         {"LogName":"APPLICATION", "EventID":"16421","HostInfo.PipeName":"SLT",
-         "Threshold": float('inf')},                 
+         "Threshold": float('inf')},
         {"LogName":"APPLICATION", "EventID":"16419","HostInfo.PipeName":"SLT",
-         "Threshold": float('inf')}                
-]                                  
-                  
+         "Threshold": float('inf')}
+]
+
 old_url = "https://elkprdkibana1.intel.com:6625/app/kibana#/dashboard/"
 
 KIBANA_BASE_URL=(
