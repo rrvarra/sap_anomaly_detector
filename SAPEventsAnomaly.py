@@ -143,9 +143,9 @@ if total_anomalies:
     logging.info("Sending EMAIL to : %s", email_title)
     logging.info("EMAIL: %s", email_content)
 
-    '''
+
     em.send_html_email_alert(receiver_list=receivers, sender=sender,
                              title=email_title, message=email_content)
-    '''
+    
 else:
     logging.info("No filtered anomalies to process")
