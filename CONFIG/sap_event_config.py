@@ -208,10 +208,10 @@ MIN_THRESHOLDS = [
          "Threshold": float('inf')}
 ]
 
-old_url = "https://elkprdkibana1.intel.com:6625/app/kibana#/dashboard/"
+KIBANA_URL_PREFIX = 'https://sapps-admin.eck1kb.intel.com'
 
 KIBANA_BASE_URL=(
-        "https://elkprdkibana1.intel.com:6601/s/sap/app/kibana#dashboard/"
+        f"{KIBANA_URL_PREFIX}/app/kibana#dashboard/"
         "d57f43d0-cbeb-11e7-a144-7d8b9d99da37?_g=(refreshInterval:(display:Off,pause:!f,value:0),"
         "time:(from:now-7d,mode:quick,to:now))&_a=("
         "description:'',"
