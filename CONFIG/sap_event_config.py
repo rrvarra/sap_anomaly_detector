@@ -49,12 +49,9 @@ EMAIL_TO = [
         'sap.l3.us@intel.com',
         'SAPL3IIDC@intel.com',
         'ram.r.varra@intel.com',
-        'walter.burke@intel.com',
-        'john.r.barbour@intel.com',
         'abhishek.shukla@intel.com',
         'gowri.shankar.gavara@intel.com',
         'karl.e.mailman@intel.com',
-        'gary.gilardi@intel.com',
         'sap.l3.basis@intel.com',
         'balamurugan.sivasubramanian@intel.com',
         'vipin.muthukattil@intel.com'
