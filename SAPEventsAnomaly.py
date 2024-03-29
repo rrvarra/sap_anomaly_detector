@@ -46,7 +46,7 @@ idam_evt_grps = {}
 
 for idx, row in event_types_df.iterrows():
     # get data for each event
-    #print(row)
+    logging.info("Querying for %s", row)
     query = sapconf.get_event_counts_query(**row)
     results = qe.es_get_aggregations_data(es_instance=es,
                                    index=sapconf.ES_CONFIG['INDEX'],
@@ -146,6 +146,6 @@ if total_anomalies:
 
     em.send_html_email_alert(receiver_list=receivers, sender=sender,
                              title=email_title, message=email_content)
-    
+
 else:
     logging.info("No filtered anomalies to process")

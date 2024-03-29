@@ -37,10 +37,8 @@ def get_es_instance(es_config):
 
 def es_get_aggregations_data(es_instance, index, doc_type, query, filter_path=None):
 
-    #response = es_instance.search(index=index, doc_type=doc_type,
-    #                              body=query, filter_path=filter_path, request_timeout=60)
-    logging.info("Query: %s", json.dumps(query, indent=2))
-    logging.info("Filter: %s", filter_path)
+    #logging.info("Query: %s", json.dumps(query, indent=2))
+    #logging.info("Filter: %s", filter_path)
     response = es_instance.search(index=index,
                                   body=query, filter_path=filter_path, request_timeout=60
                                   )

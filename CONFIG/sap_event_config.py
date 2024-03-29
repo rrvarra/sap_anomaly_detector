@@ -7,6 +7,7 @@ Created on Thu Mar 15 14:16:52 2018
 
 from datetime import datetime, timedelta
 import platform
+import os
 
 _CA_CERT_FILE = 'CONFIG/IntelSHA256RootCA-Base64.crt'
 
@@ -59,12 +60,16 @@ EMAIL_TO = [
 #EMAIL_TO = ['ram.r.varra@intel.com']
 EMAIL_FROM = 'anomaly_detector@intel.com'
 
-EMAIL_SUBJECT = 'Top {anomaly_count} SAP Event Anomalies for today from %s ' % (platform.node(), )
+EMAIL_SUBJECT = 'Top {anomaly_count} SAP Event Anomalies for today'
 EMAIL_TEMPLATE = (
-        """<html>
+        f"""<html>
                 <h2>SAP Events Anomaly Detection Alert</h2><br/>
-                Following are the anomalies for: <b>{time_period}</b></br>
-                {anomaly_table}<br/></html>
+                <h3>Following are the anomalies for: <b>{{time_period}}</b></b3>
+                {{anomaly_table}}<br/>
+                <br/>
+                <br/>
+                <h4>Running on {platform.node()} - {os.path.dirname(__file__)}</h4>
+                </html>
            """)
 
 GROUP_LIMIT = 500
@@ -205,7 +210,8 @@ MIN_THRESHOLDS = [
          "Threshold": float('inf')}
 ]
 
-KIBANA_URL_PREFIX = 'https://sapps-admin.eck1kb.intel.com'
+#KIBANA_URL_PREFIX = 'https://sapps-admin.eck1kb.intel.com'
+KIBANA_URL_PREFIX = 'https://sapps-user.eck1kb.intel.com'
 
 KIBANA_BASE_URL=(
         f"{KIBANA_URL_PREFIX}/app/kibana#dashboard/"
